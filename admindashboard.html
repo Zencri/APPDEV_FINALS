@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>BorrowBox Admin - Dashboard</title>
+<script src="js/theme-init.js"></script>
+<script src="js/auth.js?v=4"></script>
+<script src="js/shared.js"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        primary: "#3b82f6",
+        "background-light": "#f6f6f8",
+        "background-dark": "#0c0c0c",
+      },
+      fontFamily: {
+        display: ["Inter", "sans-serif"]
+      },
+      borderRadius: {
+        DEFAULT: "0.25rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
+        full: "9999px"
+      },
+    },
+  },
+}
+</script>
+<style>
+body { font-family: 'Inter', sans-serif; }
+.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+/* Dark mode global polish */
+.dark body { background-color: #0c0c0c; }
+.dark .border-slate-200 { border-color: rgba(71, 85, 105, 0.4) !important; }
+.dark table { border-color: transparent; }
+.dark thead tr { border-bottom-color: rgba(71, 85, 105, 0.3) !important; }
+.dark tbody tr { border-bottom-color: rgba(71, 85, 105, 0.2) !important; }
+.dark .divide-y > * + * { border-top-color: rgba(71, 85, 105, 0.2) !important; }
+
+/* Glowing card effect in dark mode */
+.dark .shadow-lg {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04) !important;
+}
+.dark .shadow-md {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) !important;
+}
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col">
+<!-- Top Navbar -->
+<header class="sticky top-0 z-40 flex h-16 w-full items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-3xl font-bold">package_2</span>
+<h2 class="text-xl font-bold tracking-tight">BorrowBox</h2>
+</div>
+<div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<h1 class="text-sm font-semibold text-slate-600 dark:text-slate-400">Dashboard</h1>
+</div>
+<div class="flex items-center gap-4">
+<button id="themeToggle" class="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" type="button">
+<span id="themeIcon" class="material-symbols-outlined text-slate-600 dark:text-slate-300">dark_mode</span>
+</button>
+<div class="flex items-center gap-3 pl-2 border-l border-slate-200 dark:border-slate-800">
+<div class="flex flex-col items-end text-xs">
+<span class="font-bold" id="currentUsername">User</span>
+<span class="text-slate-500" id="currentUserRole">Role</span>
+</div>
+<div class="h-10 w-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center overflow-hidden">
+<img alt="Profile Avatar" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIG97uiB-KPT0CIAR7tAC2fn4l-3otj17WwIbaOOV73jcBj5nDr2udWutND-SAvMZnKftSuwm2j8hDm6Xol6YA-55lfCJELDkWAAuTcvRbDbxQJ-pmay1WqFI8pIApjE0wzKZ8jV3EJSscN4u5Y_uWTmTA_pKbS43S-T_4f7u9Y-S8FQzak5R3ulvJAn6xeIddB3GECIFek25V2y-zDCJFEvkWYlvPBPx7F0MqPk6gUSy6ozRi2YRzCx-SZZze4OMvEw2YmejNGdQ" />
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar -->
+<aside class="hidden lg:flex w-72 flex-col border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark p-4 overflow-y-auto">
+<nav class="space-y-1">
+<p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">General</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary text-sm font-medium transition-colors" href="admindashboard.html">
+<span class="material-symbols-outlined text-xl">grid_view</span>
+<span class="text-sm">Dashboard</span>
+</a>
+<div class="pt-4 pb-2">
+<p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Management</p>
+<button class="menu-toggle w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors" type="button" data-target="userManagementMenu" aria-expanded="false">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">group</span>
+<span class="text-sm">User Management</span>
+</div>
+<span class="material-symbols-outlined text-sm menu-arrow">expand_more</span>
+</button>
+<div id="userManagementMenu" class="hidden ml-5 mt-1 space-y-1 border-l border-slate-200 dark:border-slate-700 pl-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="students.html">
+<span class="material-symbols-outlined text-lg">school</span>
+<span>Students</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="employees.html">
+<span class="material-symbols-outlined text-lg">badge</span>
+<span>Employees</span>
+</a>
+</div>
+<button class="menu-toggle mt-1 w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors" type="button" data-target="inventoryMenu" aria-expanded="false">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">inventory_2</span>
+<span class="text-sm">Inventory</span>
+</div>
+<span class="material-symbols-outlined text-sm menu-arrow">expand_more</span>
+</button>
+<div id="inventoryMenu" class="hidden ml-5 mt-1 space-y-1 border-l border-slate-200 dark:border-slate-700 pl-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="itemmasterfile.html">
+<span class="material-symbols-outlined text-lg">inventory</span>
+<span>Item Masterfile</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="myborrowings.html">
+<span class="material-symbols-outlined text-lg">history</span>
+<span>My Borrowings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" href="itemmanagement.html">
+<span class="material-symbols-outlined text-lg">edit_note</span>
+<span>Item Management</span>
+</a>
+</div>
+</div>
+<div class="pt-4 pb-2">
+<p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Operations</p>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors" href="borrowingrequests.html">
+<span class="material-symbols-outlined text-xl">handshake</span>
+<span class="text-sm">Borrowing Requests</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-colors" href="returns.html">
+<span class="material-symbols-outlined text-xl">assignment_return</span>
+<span class="text-sm">Returns</span>
+</a>
+</div>
+</nav>
+<div class="mt-auto space-y-3 pt-4">
+<a href="signin.html" class="flex items-center justify-center gap-2 w-full rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-100 transition-colors dark:border-red-900/40 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30">
+<span class="material-symbols-outlined text-lg">logout</span>
+<span>Sign Out</span>
+</a>
+
+</div>
+</aside>
+<main class="flex-1 overflow-y-auto p-6 md:p-8 space-y-8">
+<div class="flex items-center justify-between">
+<h2 class="text-3xl font-black tracking-tight">Overview</h2>
+<div class="flex items-center gap-3">
+<button class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span> Export
+</button>
+<a href="itemmanagement.html" class="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm hover:bg-primary/90 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span> Add Item
+</a>
+</div>
+</div>
+
+<!-- KPI Stat Cards (Navy) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+  <div class="bg-slate-800 dark:bg-slate-900 border border-slate-700 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-black/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.8)] flex flex-col gap-2">
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Total Items</p>
+    <h3 class="text-4xl font-black tracking-tight text-white" id="statTotalItems">0</h3>
+    <p class="text-xs text-slate-400 mt-1">In system inventory</p>
+  </div>
+  <div class="bg-slate-800 dark:bg-slate-900 border border-slate-700 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-black/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.8)] flex flex-col gap-2">
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Pending Requests</p>
+    <h3 class="text-4xl font-black tracking-tight text-blue-400" id="statPendingRequests">0</h3>
+    <p class="text-xs text-slate-400 mt-1">Awaiting approval</p>
+  </div>
+  <div class="bg-slate-800 dark:bg-slate-900 border border-slate-700 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-black/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.8)] flex flex-col gap-2">
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Total Users</p>
+    <h3 class="text-4xl font-black tracking-tight text-white" id="statTotalUsers">0</h3>
+    <p class="text-xs text-slate-400 mt-1">Students &amp; Employees</p>
+  </div>
+  <div class="bg-slate-800 dark:bg-slate-900 border border-slate-700 dark:border-slate-800 rounded-2xl p-6 shadow-lg shadow-black/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.8)] flex flex-col gap-2">
+    <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">Overdue Items</p>
+    <h3 class="text-4xl font-black tracking-tight text-red-400" id="statOverdue">0</h3>
+    <p class="text-xs text-slate-400 mt-1">Needs attention</p>
+  </div>
+</div>
+
+<!-- Item Status Breakdown Card -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-6 shadow-lg shadow-black/5 dark:shadow-[0_8px_32px_rgba(0,0,0,0.7)]">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="font-bold text-lg">Inventory Breakdown</h3>
+  </div>
+  <div class="flex items-center gap-2 mb-3">
+    <span class="text-sm font-bold text-slate-700 dark:text-slate-300" id="statAvailable">0 Available</span>
+    <span class="text-slate-300 dark:text-slate-600">/</span>
+    <span class="text-sm font-bold text-slate-700 dark:text-slate-300" id="statBorrowed">0 Borrowed</span>
+    <span class="text-slate-300 dark:text-slate-600">/</span>
+    <span class="text-sm font-bold text-slate-700 dark:text-slate-300" id="statMaintenance">0 Maintenance</span>
+  </div>
+  <div class="h-3 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex" id="statBar">
+    <div class="bg-emerald-500 h-full w-0 transition-all duration-700" id="barAvailable"></div>
+    <div class="bg-blue-500 h-full w-0 transition-all duration-700" id="barBorrowed"></div>
+    <div class="bg-amber-500 h-full w-0 transition-all duration-700" id="barMaintenance"></div>
+  </div>
+  <div class="flex gap-5 mt-3">
+    <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-emerald-500"></div><span class="text-xs text-slate-500 font-medium">Available</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-blue-500"></div><span class="text-xs text-slate-500 font-medium">Borrowed</span></div>
+    <div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-amber-500"></div><span class="text-xs text-slate-500 font-medium">Maintenance</span></div>
+  </div>
+</div>
+
+<!-- Recent Items Table -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/50 rounded-2xl overflow-hidden shadow-lg shadow-black/5 dark:shadow-[0_8px_32px_rgba(0,0,0,0.7)]">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<h3 class="font-bold text-lg">Recent Inventory Additions</h3>
+<a href="itemmasterfile.html" class="text-sm font-medium text-primary hover:underline">View all</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Item Name</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Category</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Condition</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Status</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Date Added</th>
+</tr>
+</thead>
+<tbody id="recentItemsTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+<tr>
+<td colspan="5" class="px-6 py-10 text-center text-sm text-slate-500">Loading recent items...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</main>
+</div>
+</div>
+
+<script src="js/admindashboard.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

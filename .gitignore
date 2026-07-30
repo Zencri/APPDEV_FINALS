@@ -1,0 +1,15 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Django specific
+*.log
+local_settings.py
+
+# Optional: You can choose to ignore the database if you want them to start fresh, 
+# but for a school project, submitting the seeded database is usually preferred so 
+# they can see your data immediately without running migrations.
+# db.sqlite3
